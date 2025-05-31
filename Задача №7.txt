@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DisMatRgrTask7
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int N = int.Parse(Console.ReadLine()); 
+            int M = int.Parse(Console.ReadLine());
+            int[,] dist = new int[N + 1, N + 1];
+            for (int i = 1; i <= N; i++)
+            {
+                for (int j = 1; j <= N; j++)
+                {
+                    if (i == j) dist[i, j] = 0;
+                    else dist[i, j] = int.MaxValue / 2;
+                }
+            }
+            for (int i = 0; i < M; i++)
+            {
+                int[] road = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                int from = road[0];
+                int to = road[1];
+                int len = road[2];
+
+                dist[from, to] = len;
+                dist[to, from] = len;
+            }
+            for (int k = 1; k <= N; k++)
+            {
+                for (int i = 1; i <= N; i++)
+                {
+                    for (int j = 1; j <= N; j++)
+                    {
+                        if (dist[i, j] > dist[i, k] + dist[k, j])
+                        {
+                            dist[i, j] = dist[i, k] + dist[k, j];
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("Кратчайшие расстояния между городами:");
+            for (int i = 1; i <= N; i++)
+            {
+                for (int j = 1; j <= N; j++)
+                {
+                    if (i == j) continue;
+                    Console.Write($"Из {i} в {j}: ");
+                    if (dist[i, j] == int.MaxValue / 2)
+                        Console.WriteLine("-1 (нет пути)");
+                    else
+                        Console.WriteLine(dist[i, j]);
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AiPRgrGoroda
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] firstLine = Console.ReadLine().Split();
+            int N = int.Parse(firstLine[0]);
+            int M = int.Parse(firstLine[1]);
+            int[,] dist = new int[N + 1, N + 1];
+            for (int i = 1; i <= N; i++)
+            {
+                for (int j = 1; j <= N; j++)
+                {
+                    if (i == j)
+                        dist[i, j] = 0;
+                    else
+                        dist[i, j] = int.MaxValue;
+                }
+            }
+            for (int k = 0; k < M; k++)
+            {
+                string[] line = Console.ReadLine().Split();
+                int I = int.Parse(line[0]);
+                int J = int.Parse(line[1]);
+                int L = int.Parse(line[2]);
+                if (L < dist[I, J])
+                {
+                    dist[I, J] = L;
+                    dist[J, I] = L;
+                }
+            }
+            for (int k = 1; k <= N; k++) // Флойд Уоршал
+            {
+                for (int i = 1; i <= N; i++)
+                {
+                    for (int j = 1; j <= N; j++)
+                    {
+                        if (dist[i, k] + dist[k, j] < dist[i, j])
+                        {
+                            dist[i, j] = dist[i, k] + dist[k, j];
+                        }
+                    }
+                }
+            }
+            int maxDistance = 0;
+            for (int i = 1; i <= N; i++)
+            {
+                for (int j = 1; j <= N; j++)
+                {
+                    if (dist[i, j] > maxDistance && dist[i, j] < int.MaxValue / 2)
+                    {
+                        maxDistance = dist[i, j];
+                    }
+                }
+            }
+            Console.WriteLine(maxDistance);
+        }
+    }
+}
