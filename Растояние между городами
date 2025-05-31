@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AiPRgrRastGoroda
+{
+    internal class Program
+    {
+        static double DegreesToRadians(double degrees)
+        {
+            return degrees * Math.PI / 180;
+        }
+        static void Main(string[] args)
+        {
+            string[] city1 = Console.ReadLine().Split();
+            double lat1 = double.Parse(city1[0]);
+            double lon1 = double.Parse(city1[1]);
+            string[] city2 = Console.ReadLine().Split();
+            double lat2 = double.Parse(city2[0]);
+            double lon2 = double.Parse(city2[1]);
+            int R = int.Parse(Console.ReadLine());
+            double lat1Rad = DegreesToRadians(lat1);
+            double lon1Rad = DegreesToRadians(lon1);
+            double lat2Rad = DegreesToRadians(lat2);
+            double lon2Rad = DegreesToRadians(lon2);
+            double deltaLat = lat2Rad - lat1Rad;
+            double deltaLon = lon2Rad - lon1Rad;
+            double a = Math.Pow(Math.Sin(deltaLat / 2), 2) + Math.Cos(lat1Rad) * Math.Cos(lat2Rad) * Math.Pow(Math.Sin(deltaLon / 2), 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            double distance = R * c;
+            Console.WriteLine($"{distance:F3}");
+        }
+    }
+}
